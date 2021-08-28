@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+    </head>
+    <body>
+        <form id="form">
+            <label for="webPageName">Add web page name:</label><br>
+            <input type="text" id="webPageName" name="webPageName"><br>
+            <input type="button" value="Add" id="addButton" onclick="addRow()">
+        </form>
+        <table id="webPageNamesTable">
+            <caption>Web Page Names Table</caption>
+            <tr>
+                <th>Name</th>
+                <th>Time</th>
+                <th>Start/Stop</th>
+                <th>Remove</th>
+            </tr>
+        </table>
+        <script>
+            "use strict";
+
+            function addRow() {
+                let form = document.getElementById("form");
+                let table = document.getElementById("webPageNamesTable");
+                let name = form.elements[0].value;
+                if (isPresent(name, table)) {
+                    return;
+                }
+
+                let row = table.insertRow(table.rows.length);
+
+                let tdName = row.insertCell(0);
+                tdName.innerHTML = name;
+
+                let tdTime = row.insertCell(1);
+                tdTime.innerHTML = 0;
+
+                let tdButton = row.insertCell(2);
+                let startOrStopButton = document.createElement("button");
+                startOrStopButton.innerHTML = "Start";
+                tdButton.addEventListener("click", function() {
+                    let timerId;
+                    if (startOrStopButton.innerHTML === "Start") {
+                        timerId = start(name, table);
+                        alert(timerId);
+                        startOrStopButton.innerHTML = "Stop";
+                    } else if (startOrStopButton.innerHTML === "Stop") {
+                        clearInterval(timerId);
+                        alert(timerId);
+                        startOrStopButton.innerHTML = "Start";
+                    }
+                });
+                tdButton.appendChild(startOrStopButton);
+
+                let tdRemove = row.insertCell(3);
+                let removeButton = document.createElement("button");
+                removeButton.innerHTML = "Remove";
+                //removeButton.id = name + "RemoveButton"; -> egyenlore nem kell
+                removeButton.addEventListener("click", function() { 
+                    removeRow(name, table);
+                });
+                tdRemove.appendChild(removeButton);
+            }
+
+            function start(name, table) {
+                let rows = table.rows;
+                let length = rows.length;
+                for (let i = 0; i < length; i++) {
+                    if (rows[i].cells[0].innerHTML === name) {
+                        return setInterval(function() {rows[i].cells[1].innerHTML++;}, 1000);
+                    }
+                }
+            }
+
+            function isPresent(name, table) {
+                let rows = table.rows;
+                let length = rows.length;
+                for (let i = 0; i < length; i++) {
+                    if (rows[i].cells[0].innerHTML === name) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            function removeRow(name, table) {
+                //lehet itt kelleni fog removeEventListener hivas -> ehhez jol jon majd a buttonoknak egy id-t is bellitani, ld. fentebb
+                let index = 0;
+                let rows = table.rows;
+                let length = rows.length;
+                for (let i = 0; i < length; i++) {
+                    if (rows[i].cells[0].innerHTML === name) {
+                        index = i;
+                    }
+                }
+                table.deleteRow(index);
+            }
+        </script>
+    </body>
+</html>
