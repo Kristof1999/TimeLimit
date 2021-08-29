@@ -18,10 +18,23 @@ function addRow() {
     let tdTime = row.insertCell(1);    
     tdTime.innerHTML = 0;
 
-    
+    let tdLimit = row.insertCell(2);
+    tdLimit.innerHTML = 0;
 
+    let tdSetLimit = row.insertCell(3);
+    let inputLimit = document.createElement("input");
+    inputLimit.setAttribute("type", "number");
+    inputLimit.setAttribute("min", 0);
+    //TODO: CSS-el allitani inputLimit width-jet
+    tdSetLimit.appendChild(inputLimit);
+    let setButton = document.createElement("button");
+    setButton.innerHTML = "Set";
+    setButton.addEventListener("click", function() {
+        tdLimit.innerHTML = inputLimit.value;
+    });
+    tdSetLimit.appendChild(setButton);
 
-    let tdButton = row.insertCell(3);
+    let tdButton = row.insertCell(4);
     let startOrStopButton = document.createElement("button");
     startOrStopButton.innerHTML = "Start";
     tdButton.addEventListener("click", function() {
@@ -38,7 +51,7 @@ function addRow() {
                 
     tdButton.appendChild(startOrStopButton);
       
-    let tdRemove = row.insertCell(4);                
+    let tdRemove = row.insertCell(5);                
     let removeButton = document.createElement("button");
     removeButton.innerHTML = "Remove";
     //removeButton.id = name + "RemoveButton"; -> egyenlore nem kell
