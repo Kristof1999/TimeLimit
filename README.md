@@ -8,6 +8,6 @@ Edge/test cases covered:
 
 User story
 - if a user adds a new web page, then a new row in the table will appear containing the following cells: the name/URL of the web page, an integer displaying how much time the user has spent on the given day on a website, the start/stop button, the remove button
-- if a user clicks on the start button, he/she(/it?) will be redirected to the desired site, and the timer will start ticking, in other terms: it will increase by 1 every 1 second
-- if a user clicks on the stop button, the timer will stop increasing
+- if a user clicks on the start button, he/she(/it?) will be redirected to the desired site, and the timer will start ticking, in other terms: it will increase by 1 every 1 second, and also: it will change it's text to Stop
+- if a user clicks on the stop button, the timer will stop increasing, and the button's text will change to Start
 - if a user clicks on the remove button, the given row will be removed, and if decides to add the same row, everything will be new
