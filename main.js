@@ -1,25 +1,54 @@
 "use strict";
 
 let timerId;
+let storageCounter = 0;
 
-function addRow() {        
-    let form = document.getElementById("form");
+document.addEventListener("load", loadAllFromLocalStorage());
+
+function loadAllFromLocalStorage() {
+    let i = 0;
+    while (true) {
+        if (localStorage.getItem(i + "," + 0) == null) {
+            break;
+        } else {
+            addRow(
+                localStorage.getItem(i + "," + 0),
+                localStorage.getItem(i + "," + 1),
+                localStorage.getItem(i + "," + 2));
+            i++;
+        }
+    }
+}
+
+function saveAllToLocalStorage() {
+    localStorage.clear();
     let table = document.getElementById("webPageNamesTable");
-    let name = form.elements[0].value;
+    let rows = table.rows;
+    let length = rows.length;
+    for (let i = 0; i < length; i++) {
+        localStorage.setItem(i + "," + 0, rows[i].cells[0].innerHTML);
+        localStorage.setItem(i + "," + 1, rows[i].cells[1].innerHTML);
+        localStorage.setItem(i + "," + 2, rows[i].cells[2].innerHTML);
+    }
+}
+
+function addRow(name, time, limit) {     
+    let table = document.getElementById("webPageNamesTable");
     if (isPresent(name, table)) {
         return;
     }
 
-    let row = table.insertRow(table.rows.length);
+    let length = table.rows.length;
+    let row = table.insertRow(length);
     
     let tdName = row.insertCell(0);
     tdName.innerHTML = name;
     
     let tdTime = row.insertCell(1);    
-    tdTime.innerHTML = 0;
+    tdTime.innerHTML = time;
 
     let tdLimit = row.insertCell(2);
-    tdLimit.innerHTML = 0;
+    tdLimit.innerHTML = limit;
 
     let tdSetLimit = row.insertCell(3);
     let inputLimit = document.createElement("input");
@@ -60,7 +89,7 @@ function addRow() {
         let index = getIndex(name, table);
         table.deleteRow(index);
     });       
-    tdRemove.appendChild(removeButton);     
+    tdRemove.appendChild(removeButton);
 }
          
 function isPresent(name, table) {
