@@ -45,6 +45,7 @@
                 tdButton.addEventListener("click", function() {
                     if (startOrStopButton.innerHTML === "Start") {
                         timerId = start(name, table);
+                        open(name);
                         startOrStopButton.innerHTML = "Stop";
                     } else if (startOrStopButton.innerHTML === "Stop") {
                         clearInterval(timerId);
