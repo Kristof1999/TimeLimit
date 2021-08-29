@@ -21,6 +21,8 @@
         <script>
             "use strict";
 
+            let timerId;
+
             function addRow() {
                 let form = document.getElementById("form");
                 let table = document.getElementById("webPageNamesTable");
@@ -41,14 +43,11 @@
                 let startOrStopButton = document.createElement("button");
                 startOrStopButton.innerHTML = "Start";
                 tdButton.addEventListener("click", function() {
-                    let timerId;
                     if (startOrStopButton.innerHTML === "Start") {
                         timerId = start(name, table);
-                        alert(timerId);
                         startOrStopButton.innerHTML = "Stop";
                     } else if (startOrStopButton.innerHTML === "Stop") {
                         clearInterval(timerId);
-                        alert(timerId);
                         startOrStopButton.innerHTML = "Start";
                     }
                 });
