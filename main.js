@@ -5,6 +5,15 @@ let storageCounter = 0;
 
 document.addEventListener("load", loadAllFromLocalStorage());
 
+function clearTableAndStorage() {
+    localStorage.clear();
+    let table = document.getElementById("webPageNamesTable");
+    let length = table.rows.length;
+    for (let i = 1; i < length; i++) {
+        table.deleteRow(i);
+    }
+}
+
 function loadAllFromLocalStorage() {
     let i = 0;
     while (true) {
