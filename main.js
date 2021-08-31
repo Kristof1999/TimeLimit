@@ -15,15 +15,20 @@ function clearTableAndStorage() {
 }
 
 function loadAllFromLocalStorage() {
+    let day = new Date().getDate();
     let i = 0;
     while (true) {
+        let name = localStorage.getItem(i + "," + 0);
+        let time = localStorage.getItem(i + "," + 1);
+        let limit = localStorage.getItem(i + "," + 2);
         if (localStorage.getItem(i + "," + 0) == null) {
             break;
         } else {
-            addRow(
-                localStorage.getItem(i + "," + 0),
-                localStorage.getItem(i + "," + 1),
-                localStorage.getItem(i + "," + 2));
+            if (day - localStorage.getItem(i + "," + 3) != 0) {
+                addRow(name, 0, limit);
+            } else {
+                addRow(name, time, limit);
+            }
             i++;
         }
     }
@@ -34,14 +39,19 @@ function saveAllToLocalStorage() {
     let table = document.getElementById("webPageNamesTable");
     let rows = table.rows;
     let length = rows.length;
+    let day = new Date().getDate();
     for (let i = 0; i < length; i++) {
-        localStorage.setItem(i + "," + 0, rows[i].cells[0].innerHTML);
-        localStorage.setItem(i + "," + 1, rows[i].cells[1].innerHTML);
-        localStorage.setItem(i + "," + 2, rows[i].cells[2].innerHTML);
+        let name = rows[i].cells[0].innerHTML;
+        let time = rows[i].cells[1].innerHTML;
+        let limit = rows[i].cells[2].innerHTML;
+        localStorage.setItem(i + "," + 0, name);
+        localStorage.setItem(i + "," + 1, time);
+        localStorage.setItem(i + "," + 2, limit);
+        localStorage.setItem(i + "," + 3, day);
     }
 }
 
-function addRow(name, time, limit) {     
+function addRow(name, time, limit) {  
     let table = document.getElementById("webPageNamesTable");
     if (isPresent(name, table)) {
         return;

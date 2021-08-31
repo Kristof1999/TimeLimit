@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Test</title>
+        <title>TimeLimit</title>
     </head>
     <body>
         <form id="form">
             <label for="webPageName">Add web page name:</label><br>
             <input type="text" id="webPageName" name="webPageName"><br>
-            <input type="button" value="Add" id="addButton" onclick="addRow(document.getElementById('form').elements[0].value, 0, 0)">
+            <input type="button" value="Add" id="addButton" onclick="addRow(document.getElementById('form').elements[0].value, 0, 0);">
         </form>
-        <button onclick="saveAllToLocalStorage()">Save below table</button>
-        <button onclick="clearTableAndStorage();">Clear below table</button>
+        <button onclick="saveAllToLocalStorage();">Save below table to local storage</button>
+        <button onclick="clearTableAndStorage();">Clear below table and local storage</button>
         <table id="webPageNamesTable">
             <caption>Web Page Names Table</caption>
             <tr>
@@ -22,7 +22,6 @@
                 <th>Remove</th>
             </tr>
         </table>
-        <p id="test"></p>
         <script src="main.js"></script>
     </body>
 </html>
