@@ -79,6 +79,7 @@ function addRow(name, time, limit) {
     setButton.innerHTML = "Set";
     setButton.addEventListener("click", function() {
         tdLimit.innerHTML = inputLimit.value;
+        inputLimit.value = "";
     });
     tdSetLimit.appendChild(setButton);
 
@@ -87,8 +88,17 @@ function addRow(name, time, limit) {
     startOrStopButton.innerHTML = "Start";
     tdButton.addEventListener("click", function() {
         if (startOrStopButton.innerHTML === "Start") {
-            let index = getIndex(name, table);
-            timerId = setInterval(function() {table.rows[index].cells[1].innerHTML++;}, 1000);
+            timerId = setInterval(function() {
+                if (parseInt(tdTime.innerHTML) < parseInt(tdLimit.innerHTML)) {
+                    tdTime.innerHTML++;
+                } else {
+                    clearInterval(timerId);
+                    alert("Time is up! You have spent " + tdTime.innerHTML + " seconds on" + name 
+                    + " today, and so you have reached your limit: " + tdLimit.innerHTML);
+                    startOrStopButton.innerHTML = "Start";
+                    startOrStopButton.setAttribute("disabled", "true");        
+                }
+            }, 1000);
             open(name);
             startOrStopButton.innerHTML = "Stop";
         } else if (startOrStopButton.innerHTML === "Stop") {
