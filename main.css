@@ -1,0 +1,31 @@
+body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+form {
+    margin: auto;
+}
+
+td input {
+    max-width: 80px;
+}
+
+td, th {
+    padding: 5px;
+}
+
+table, td, th {
+    border: 1px solid black;
+    vertical-align: middle;
+    text-align: center;
+}
+
+table {
+    border-spacing: 5px;
+    margin: auto;
+    border-collapse: collapse;
+}
+
+#inputLimit {
+    max-width: 5px;
+}

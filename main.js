@@ -73,7 +73,6 @@ function addRow(name, time, limit) {
     let inputLimit = document.createElement("input");
     inputLimit.setAttribute("type", "number");
     inputLimit.setAttribute("min", 0);
-    //TODO: CSS-el allitani inputLimit width-jet
     tdSetLimit.appendChild(inputLimit);
     let setButton = document.createElement("button");
     setButton.innerHTML = "Set";
