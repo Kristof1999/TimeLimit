@@ -1,5 +1,6 @@
 "use strict";
 
+
 let timerId;
 let storageCounter = 0;
 

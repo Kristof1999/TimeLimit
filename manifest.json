@@ -1,0 +1,10 @@
+{
+    "name": "TimeLimit",
+    "manifest_version": 3,
+    "version": "1",
+    "description": "Limits time spent on specified websites.",
+    "permissions": ["tabs"],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
