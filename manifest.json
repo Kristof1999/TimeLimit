@@ -3,8 +3,11 @@
     "manifest_version": 3,
     "version": "1",
     "description": "Limits time spent on specified websites.",
-    "permissions": ["tabs"],
+    "permissions": ["tabs", "scripting", "activeTab"],
     "background": {
         "service_worker": "background.js"
+    },
+    "action": {
+        "default_popup": "popup.html"
     }
 }

@@ -1,8 +1,6 @@
 "use strict";
 
-
 let timerId;
-let storageCounter = 0;
 
 document.addEventListener("load", loadAllFromLocalStorage());
 
@@ -18,20 +16,16 @@ function clearTableAndStorage() {
 function loadAllFromLocalStorage() {
     let day = new Date().getDate();
     let i = 0;
-    while (true) {
+    while (localStorage.getItem(i + "," + 0) != null) {
         let name = localStorage.getItem(i + "," + 0);
         let time = localStorage.getItem(i + "," + 1);
         let limit = localStorage.getItem(i + "," + 2);
-        if (localStorage.getItem(i + "," + 0) == null) {
-            break;
+        if (day - localStorage.getItem(i + "," + 3) != 0) {
+            addRow(name, 0, limit);
         } else {
-            if (day - localStorage.getItem(i + "," + 3) != 0) {
-                addRow(name, 0, limit);
-            } else {
-                addRow(name, time, limit);
-            }
-            i++;
+            addRow(name, time, limit);
         }
+        i++;
     }
 }
 
