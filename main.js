@@ -1,10 +1,15 @@
 "use strict";
 
-let timerId;
+//This load doesn't seem to fire when it should...
+document.getElementsByTagName("body")[0].addEventListener("load", () => { load(); });
+document.getElementById("loadButton").addEventListener("click", () => { load(); });
+document.getElementById("clearButton").addEventListener("click", () => { clear(); });
+document.getElementById("saveButton").addEventListener("click", () => { save(); });
+document.getElementById("addButton").addEventListener("click", () => {
+    addRow(document.getElementById("form").elements[0].value, 0, 0);
+});
 
-document.addEventListener("load", loadAllFromLocalStorage());
-
-function clearTableAndStorage() {
+function clear() {
     localStorage.clear();
     let table = document.getElementById("webPageNamesTable");
     let length = table.rows.length;
@@ -13,24 +18,28 @@ function clearTableAndStorage() {
     }
 }
 
-function loadAllFromLocalStorage() {
-    let day = new Date().getDate();
-    let i = 0;
-    while (localStorage.getItem(i + "," + 0) != null) {
-        let name = localStorage.getItem(i + "," + 0);
-        let time = localStorage.getItem(i + "," + 1);
-        let limit = localStorage.getItem(i + "," + 2);
-        if (day - localStorage.getItem(i + "," + 3) != 0) {
-            addRow(name, 0, limit);
-        } else {
-            addRow(name, time, limit);
+function load() {
+    chrome.storage.sync.get(null, (items) => {
+        let length = items.length;
+        let day = new Date().getDate();
+        
+        for (let i = 0; i < length; i++) {
+            let nameKey = i + "," + 0;
+            let timeKey = i + "," + 1;
+            let limitKey = i + "," + 2;
+            let dayKey = i + "," + 3;
+            if (day != items[dayKey]) {
+                addRow(items[nameKey], 0, items[limitKey]);
+            } else {
+                addRow(items[nameKey], items[timeKey], items[limitKey]);
+            } 
         }
-        i++;
-    }
+    });
 }
 
-function saveAllToLocalStorage() {
-    localStorage.clear();
+function save() {
+    let syncedStorage = chrome.storage.sync;
+    syncedStorage.clear();
     let table = document.getElementById("webPageNamesTable");
     let rows = table.rows;
     let length = rows.length;
@@ -39,11 +48,16 @@ function saveAllToLocalStorage() {
         let name = rows[i].cells[0].innerHTML;
         let time = rows[i].cells[1].innerHTML;
         let limit = rows[i].cells[2].innerHTML;
-        localStorage.setItem(i + "," + 0, name);
-        localStorage.setItem(i + "," + 1, time);
-        localStorage.setItem(i + "," + 2, limit);
-        localStorage.setItem(i + "," + 3, day);
+        let nameKey = i + "," + 0;
+        let timeKey = i + "," + 1;
+        let limitKey = i + "," + 2;
+        let dayKey = i + "," + 3;
+        syncedStorage.set({[nameKey]: name});
+        syncedStorage.set({[timeKey]: time});
+        syncedStorage.set({[limitKey]: limit});
+        syncedStorage.set({[dayKey]: day});
     }
+    syncedStorage.set({"length": length});
 }
 
 function addRow(name, time, limit) {  
@@ -77,33 +91,7 @@ function addRow(name, time, limit) {
     });
     tdSetLimit.appendChild(setButton);
 
-    let tdButton = row.insertCell(4);
-    let startOrStopButton = document.createElement("button");
-    startOrStopButton.innerHTML = "Start";
-    tdButton.addEventListener("click", function() {
-        if (startOrStopButton.innerHTML === "Start") {
-            timerId = setInterval(function() {
-                if (parseInt(tdTime.innerHTML) < parseInt(tdLimit.innerHTML)) {
-                    tdTime.innerHTML++;
-                } else {
-                    clearInterval(timerId);
-                    alert("Time is up! You have spent " + tdTime.innerHTML + " seconds on" + name 
-                    + " today, and so you have reached your limit: " + tdLimit.innerHTML);
-                    startOrStopButton.innerHTML = "Start";
-                    startOrStopButton.setAttribute("disabled", "true");        
-                }
-            }, 1000);
-            open(name);
-            startOrStopButton.innerHTML = "Stop";
-        } else if (startOrStopButton.innerHTML === "Stop") {
-            clearInterval(timerId);
-            startOrStopButton.innerHTML = "Start";
-        }
-    });
-                
-    tdButton.appendChild(startOrStopButton);
-      
-    let tdRemove = row.insertCell(5);                
+    let tdRemove = row.insertCell(4);                
     let removeButton = document.createElement("button");
     removeButton.innerHTML = "Remove";
     //removeButton.id = name + "RemoveButton"; -> egyenlore nem kell
@@ -111,6 +99,7 @@ function addRow(name, time, limit) {
         //lehet itt kelleni fog removeEventListener hivas -> ehhez jol jon majd a buttonoknak egy id-t is bellitani, ld. fentebb
         let index = getIndex(name, table);
         table.deleteRow(index);
+        save();
     });       
     tdRemove.appendChild(removeButton);
 }

@@ -8,10 +8,11 @@
         <form id="form">
             <label for="webPageName">Add web page name:</label><br>
             <input type="text" id="webPageName" name="webPageName"><br>
-            <input type="button" value="Add" id="addButton" onclick="addRow(document.getElementById('form').elements[0].value, 0, 0);">
+            <input type="button" value="Add" id="addButton">
         </form>
-        <button onclick="saveAllToLocalStorage();">Save below table to local storage</button>
-        <button onclick="clearTableAndStorage();">Clear below table and local storage</button>
+        <button id="loadButton">Load</button>
+        <button id="saveButton">Save</button>
+        <button id="clearButton">Clear</button>
         <table id="webPageNamesTable">
             <caption>Web Page Names Table</caption>
             <tr>
@@ -19,7 +20,6 @@
                 <th>Time</th>
                 <th>Limit</th>
                 <th>Set Limit</th>
-                <th>Start/Stop</th>
                 <th>Remove</th>
             </tr>
         </table>
