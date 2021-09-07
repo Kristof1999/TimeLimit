@@ -8,6 +8,7 @@ document.getElementById("saveButton").addEventListener("click", () => { save(); 
 document.getElementById("addButton").addEventListener("click", () => {
     addRow(document.getElementById("form").elements[0].value, 0, 0);
 });
+document.getElementById("updateButton").addEventListener("click", () => { load(); });
 
 function clear() {
     localStorage.clear();
@@ -22,8 +23,8 @@ function load() {
     chrome.storage.sync.get(null, (items) => {
         let length = items.length;
         let day = new Date().getDate();
-        
-        for (let i = 0; i < length; i++) {
+        //first row is header
+        for (let i = 1; i < length; i++) {
             let nameKey = i + "," + 0;
             let timeKey = i + "," + 1;
             let limitKey = i + "," + 2;
@@ -38,13 +39,15 @@ function load() {
 }
 
 function save() {
+    //TODO: make little loadbar icon in an upper corner or sg. to make clear for the user that we are saving now
     let syncedStorage = chrome.storage.sync;
     syncedStorage.clear();
     let table = document.getElementById("webPageNamesTable");
     let rows = table.rows;
     let length = rows.length;
     let day = new Date().getDate();
-    for (let i = 0; i < length; i++) {
+    //first row is header
+    for (let i = 1; i < length; i++) {
         let name = rows[i].cells[0].innerHTML;
         let time = rows[i].cells[1].innerHTML;
         let limit = rows[i].cells[2].innerHTML;
@@ -88,6 +91,7 @@ function addRow(name, time, limit) {
     setButton.addEventListener("click", function() {
         tdLimit.innerHTML = inputLimit.value;
         inputLimit.value = "";
+        save();
     });
     tdSetLimit.appendChild(setButton);
 
